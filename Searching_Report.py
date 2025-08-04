@@ -46,14 +46,11 @@ def load_data():
 
     df['Last_issue'] = pd.to_datetime(df['Last_issue'], errors='coerce').dt.strftime('%Y-%m-%d')
     df['Last_Received'] = pd.to_datetime(df['Last_Received'], errors='coerce').dt.strftime('%Y-%m-%d')
-    df['Vendor_Balance'] = pd.to_numeric(df['Vendor_Balance'], errors='coerce')
-    df['Vendor_Balance'] = df['Vendor_Balance'].apply(lambda x: f"{x:,.1f}" if pd.notnull(x) else "")
 
-    df['Store_Qunt'] = pd.to_numeric(df['Store_Qunt'], errors='coerce')
-    df['Store_Qunt'] = df['Store_Qunt'].apply(lambda x: f"{x:,.2f}" if pd.notnull(x) else "")
-
-    df['last_RCV_Cost'] = pd.to_numeric(df['last_RCV_Cost'], errors='coerce')
-    df['last_RCV_Cost'] = df['last_RCV_Cost'].apply(lambda x: f"{x:,.3f}" if pd.notnull(x) else "")
+    # Handle missing values before formatting
+    df['Vendor_Balance'] = pd.to_numeric(df['Vendor_Balance'], errors='coerce').fillna(0).apply(lambda x: f"{x:,.1f}")
+    df['Store_Qunt'] = pd.to_numeric(df['Store_Qunt'], errors='coerce').fillna(0).apply(lambda x: f"{x:,.2f}")
+    df['last_RCV_Cost'] = pd.to_numeric(df['last_RCV_Cost'], errors='coerce').fillna(0).apply(lambda x: f"{x:,.3f}")
 
     return df
 
@@ -109,10 +106,11 @@ with col1:
     csv = filtered_df.to_csv(index=False).encode('utf-8')
     st.download_button("⬇️ Download CSV", data=csv, file_name="Sharqawi_Inventory.csv", mime="text/csv")
 
-with col2:
-    excel_export_path = r"D:\\My_Work\\M.Salah Task\\Streamlit\\Sharqawi_Inventory_Export.xlsx"
-    filtered_df.to_excel(excel_export_path, index=False)
-    st.success(f"Excel exported to: {excel_export_path}")
+# Note: Excel export disabled for Streamlit Cloud due to openpyxl
+# with col2:
+#     excel_export_path = r"D:\\My_Work\\M.Salah Task\\Streamlit\\Sharqawi_Inventory_Export.xlsx"
+#     filtered_df.to_excel(excel_export_path, index=False)
+#     st.success(f"Excel exported to: {excel_export_path}")
 
 # --- Footer Signature ---
 st.markdown("---")
