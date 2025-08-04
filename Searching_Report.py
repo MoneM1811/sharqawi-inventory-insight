@@ -46,9 +46,14 @@ def load_data():
 
     df['Last_issue'] = pd.to_datetime(df['Last_issue'], errors='coerce').dt.strftime('%Y-%m-%d')
     df['Last_Received'] = pd.to_datetime(df['Last_Received'], errors='coerce').dt.strftime('%Y-%m-%d')
-    df['Vendor_Balance'] = df['Vendor_Balance'].apply(lambda x: f"{x:,.1f}")
-    df['Store_Qunt'] = df['Store_Qunt'].apply(lambda x: f"{x:,.2f}")
-    df['last_RCV_Cost'] = df['last_RCV_Cost'].apply(lambda x: f"{x:,.3f}")
+    df['Vendor_Balance'] = pd.to_numeric(df['Vendor_Balance'], errors='coerce')
+    df['Vendor_Balance'] = df['Vendor_Balance'].apply(lambda x: f"{x:,.1f}" if pd.notnull(x) else "")
+
+    df['Store_Qunt'] = pd.to_numeric(df['Store_Qunt'], errors='coerce')
+    df['Store_Qunt'] = df['Store_Qunt'].apply(lambda x: f"{x:,.2f}" if pd.notnull(x) else "")
+
+    df['last_RCV_Cost'] = pd.to_numeric(df['last_RCV_Cost'], errors='coerce')
+    df['last_RCV_Cost'] = df['last_RCV_Cost'].apply(lambda x: f"{x:,.3f}" if pd.notnull(x) else "")
 
     return df
 
@@ -94,7 +99,7 @@ styled_df = filtered_df.style \
 
 # --- Display Table ---
 st.markdown("### 📊 Filtered Inventory Data")
-st.dataframe(styled_df, use_container_width=True, height=600)
+st.dataframe(styled_df, use_container_width=True, height=700)
 
 # --- Export Options ---
 st.markdown("### 📁 Export Options")
@@ -113,7 +118,7 @@ with col2:
 st.markdown("---")
 footer_col1, footer_col2 = st.columns([1, 6])
 with footer_col1:
-    st.image("my_photo.png", width=60)
+    st.image("my_photo.png", width=50)
 with footer_col2:
     st.markdown("""
     **Abdelmonem A. Rashed**  
