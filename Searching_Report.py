@@ -68,7 +68,7 @@ def clean_dataframe(df):
         df['last_RCV_Cost'] = df['last_RCV_Cost'].apply(lambda x: f"{x:,.3f}" if pd.notnull(x) else "")
 
     return df
-
+search_df = clean_dataframe(load_data())
 # --- Load and Upload Data ---
 search_df = load_data()
 upload_to_gsheet(search_df, "https://docs.google.com/spreadsheets/d/1DFk4HC8DSTwJyyb7RNcihd72-6G1HN19WmIpxauGWv8")
