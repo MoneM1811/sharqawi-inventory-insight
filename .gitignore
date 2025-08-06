@@ -1,4 +1,4 @@
 __pycache__/
 *.xlsx
-*.json
 .secrets/
+your_service_account.json

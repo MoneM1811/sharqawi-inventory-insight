@@ -29,6 +29,19 @@ def upload_to_gsheet(df, sheet_url):
     worksheet.clear()
     worksheet.update([df.columns.values.tolist()] + df.values.tolist())
 
+from google.oauth2.service_account import Credentials
+import gspread
+
+def upload_to_gsheet_from_local(path):
+    df = pd.read_excel(path)
+    creds = Credentials.from_service_account_file("your_service_account.json")  
+    client = gspread.authorize(creds)
+    sheet = client.open_by_url("https://docs.google.com/spreadsheets/d/1DFk4HC8DSTwJyyb7RNcihd72-6G1HN19WmIpxauGWv8")
+    worksheet = sheet.get_worksheet(0)
+    worksheet.clear()
+    worksheet.update([df.columns.values.tolist()] + df.values.tolist())
+
+
 # --- Google Sheet Connection ---
 @st.cache_resource
 def connect_to_gsheet():
